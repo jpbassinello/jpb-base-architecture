@@ -1,0 +1,13 @@
+server:
+  port: 443
+spring:
+  datasource:
+    password:
+    url:
+    username: root
+
+facebook:
+  appId:
+
+google:
+  appId:

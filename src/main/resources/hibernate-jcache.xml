@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config
+		xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+		xmlns='http://www.ehcache.org/v3'>
+	<service>
+		<jsr107:defaults enable-management="true" enable-statistics="true" default-template="default-entity"/>
+	</service>
+
+	<cache alias="default-query-results-region">
+		<expiry>
+			<ttl>86400</ttl>
+		</expiry>
+		<heap>1000</heap>
+	</cache>
+
+	<cache alias="default-update-timestamps-region">
+		<expiry>
+			<none/>
+		</expiry>
+		<heap>5000</heap>
+	</cache>
+
+	<cache-template name="default-entity">
+		<expiry>
+			<ttl unit="days">1</ttl>
+		</expiry>
+		<heap>1000</heap>
+	</cache-template>
+
+	<cache-template name="default-find-all-query">
+		<expiry>
+			<ttl unit="days">1</ttl>
+		</expiry>
+		<heap>2</heap>
+	</cache-template>
+
+	<cache alias="br.com.jpb.model.User" uses-template="default-entity"/>
+	<cache alias="br.com.jpb.model.User.roles" uses-template="default-entity"/>
+</config>

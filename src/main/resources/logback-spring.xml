@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<contextName>jpb-base-architecture</contextName>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%highlight(%d{yyyy-MM-dd HH:mm:ss} %-5p %c{26} - %X{method} %X{requestURL} %X{username} %msg%n)
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="STDOUT"/>
+		<includeCallerData>true</includeCallerData>
+	</appender>
+
+	<!--This rule is at the heart of logback. It assumes that levels are ordered
+		as follows: TRACE < DEBUG < INFO < WARN < ERROR. -->
+	<logger name="br.com.jpb" level="INFO"/>
+	<logger name="org.apache" level="WARN"/>
+	<logger name="org.hibernate" level="WARN"/>
+	<logger name="org.springframework" level="WARN"/>
+	<logger name="org.flywaydb" level="INFO"/>
+	<logger name="org.apache.catalina" level="ERROR"/>
+
+	<springProfile name="development,test">
+		<!-- Hibernate show SQL with LOGBACK -->
+		<logger name="org.hibernate.SQL" level="DEBUG"/>
+
+		<root level="INFO">
+			<appender-ref ref="ASYNC_STDOUT"/>
+		</root>
+	</springProfile>
+
+	<springProfile name="stage,production">
+		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>logs/jpb-base-architecture.log</file>
+			<encoder>
+				<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %X{method} %X{requestURL} %X{username} %msg%n
+				</pattern>
+			</encoder>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<!-- rollover daily -->
+				<fileNamePattern>logs/jpb-base-architecture-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+				<!-- each file should be at most 50MB, keep 30 days worth of history, but at most 10GB -->
+				<maxFileSize>50MB</maxFileSize>
+				<maxHistory>30</maxHistory>
+				<totalSizeCap>10GB</totalSizeCap>
+			</rollingPolicy>
+		</appender>
+
+		<root level="INFO">
+			<appender-ref ref="ASYNC_STDOUT"/>
+			<appender-ref ref="FILE"/>
+		</root>
+	</springProfile>
+</configuration>
