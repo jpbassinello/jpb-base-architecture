@@ -8,7 +8,8 @@
 * User model with social login. `Facebook` and `Google` integration.
 * Enhanced log with `logback` and `Spring` integration
 * Auto generated `Swagger`
-* Usage of `MySQL` database 
+* Usage of `MySQL` database
+* `Bean Validation` with messages interpolation 
 * `QueryDSL` integration for metadata filtering queries
 * `Lombok`
 * Tests with `rest-assured`
